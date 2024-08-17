@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/slnx.sqlite
+/.vs/Hackathon-SmartCity/FileContentIndex/cfacf760-18ac-49c3-b75a-7c88fc4f7be4.vsidx
+*.vsidx
