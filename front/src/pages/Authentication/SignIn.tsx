@@ -5,10 +5,10 @@ import LogoDark from '../../images/logo/logo-dark.svg';
 import Logo from '../../images/logo/logo.svg';
 import { useForm, FieldValues, SubmitHandler, Field } from 'react-hook-form';
 import { logIn } from '../../slices/authSlice';
-import { AppDispatch } from '../../store/configureStore';
+import { AppDispatch } from '../../store/configureStore.ts';
 
 import { useDispatch } from 'react-redux';
-import agent from '../../data/agent';
+import agent from '../../data/agent.ts';
 
 const SignIn: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,11 +20,10 @@ const SignIn: React.FC = () => {
   } = useForm({ mode: 'onTouched' });
 
   const logInSubmit: SubmitHandler<FieldValues> = async (data: FieldValues) => {
-    // const respoonse = await dispatch(logIn(data));
-    // console.log(respoonse);
-    const response = await agent.Auth.login(data);
-    console.log(response);
-    navigate('/');
+   const response= agent.Auth.login(data);
+
+   console.log("Data: "+response);
+   navigate('/');
   };
   return (
     <>
