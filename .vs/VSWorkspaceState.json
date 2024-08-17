@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\API",
+    "\\API\\Controllers",
+    "\\API\\Models",
+    "\\API\\Services",
+    "\\API\\Services\\Interfaces"
+  ],
+  "PreviewInSolutionExplorer": false
+}
