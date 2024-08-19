@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240813171802_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240819154631_InitialMigrate")]
+    partial class InitialMigrate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,6 +38,18 @@ namespace API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("JMBG")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
@@ -112,13 +124,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "76a1e231-52c2-4c3b-a26a-b5f9df255328",
+                            Id = "2c5ff8b5-3bf4-474f-9dee-731c4e781c72",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "4b7b4846-9ef4-4774-9e7f-bf14b262b932",
+                            Id = "e40e30ba-e44b-45c2-867b-634e1e19488e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
