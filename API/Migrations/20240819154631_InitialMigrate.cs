@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,9 @@ namespace API.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    JMBG = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -163,8 +166,8 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4b7b4846-9ef4-4774-9e7f-bf14b262b932", null, "Admin", "ADMIN" },
-                    { "76a1e231-52c2-4c3b-a26a-b5f9df255328", null, "Member", "MEMBER" }
+                    { "2c5ff8b5-3bf4-474f-9dee-731c4e781c72", null, "Member", "MEMBER" },
+                    { "e40e30ba-e44b-45c2-867b-634e1e19488e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

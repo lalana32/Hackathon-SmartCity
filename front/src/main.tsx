@@ -7,7 +7,7 @@ import './css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 import { Provider } from 'react-redux';
-import store from './store/configureStore';
+import { store } from './store/configureStore';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={store}>

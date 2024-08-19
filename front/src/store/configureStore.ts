@@ -1,10 +1,10 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
-import { authSlice } from '../slices/authSlice.ts'; // named export
+import authReducer from '../slices/authSlice';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
-    account: authSlice.reducer,
+    auth: authReducer,
   },
 });
 export type RootState = ReturnType<typeof store.getState>;
@@ -15,6 +15,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   Action<string>
 >;
-export default store;
 
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

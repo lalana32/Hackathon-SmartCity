@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
-import toast from 'react-hot-toast';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import agent from '../data/agent';
 import { User } from '../models/User';
 import { FieldValues } from 'react-hook-form';
@@ -13,7 +12,7 @@ const initialState: UserState = {
 };
 
 export const logIn = createAsyncThunk<User, FieldValues>(
-  'account/logIn',
+  'auth/logIn',
   async (arg, thunkAPI) => {
     try {
       const user = await agent.Auth.login(arg);
@@ -43,7 +42,7 @@ export const currentUser = createAsyncThunk<User>(
   },
 );
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
@@ -71,5 +70,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUser, clearUser } = authSlice.actions;
-export default authSlice;
+const { actions, reducer } = authSlice;
+
+export const { setUser, clearUser } = actions;
+export default reducer;

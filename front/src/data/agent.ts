@@ -1,25 +1,36 @@
 import axios, { AxiosResponse } from 'axios';
-import store from '../store/configureStore';
 
 axios.defaults.baseURL = 'http://localhost:5024/api/';
 
 const responseBody = (response: AxiosResponse) => response.data;
-axios.interceptors.request.use((config: any) => {
-  const token = store.getState().account.user?.token;
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+
 const request = {
-  get: (url: string) => axios.get(url).then(responseBody),
-  post: (url: string, body: {}) => axios.post(url, body).then(responseBody),
-  put: (url: string, body: {}) => axios.put(url, body).then(responseBody),
-  delete: (url: string) => axios.delete(url).then(responseBody),
+  get: (url: string, token?: string) => {
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    return axios.get(url, { headers }).then(responseBody);
+  },
+  post: (url: string, body: {}, token?: string) => {
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    return axios.post(url, body, { headers }).then(responseBody);
+  },
+  put: (url: string, body: {}, token?: string) => {
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    return axios.put(url, body, { headers }).then(responseBody);
+  },
+  delete: (url: string, token?: string) => {
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
+    return axios.delete(url, { headers }).then(responseBody);
+  },
 };
 
 const Auth = {
-  login: (values: any) => request.post('Auth/login', values),
-  register: (values: any) => request.post('Auth/register', values),
-  currentUser: () => request.get('Auth/currentUser'),
+  login: (values: any, token?: string) =>
+    request.post('Auth/login', values, token),
+  register: (values: any, token?: string) =>
+    request.post('Auth/register', values, token),
+  currentUser: (token?: string) => request.get('Auth/currentUser', token),
+  updateUser: (userData: any, token?: string) =>
+    request.put('Auth/edit', userData, token),
 };
 
 const agent = {
