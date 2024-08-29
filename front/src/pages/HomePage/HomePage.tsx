@@ -1,16 +1,108 @@
-import React from 'react';
-import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
-import ChartThree from '../../components/Charts/ChartThree';
-import ChartTwo from '../../components/Charts/ChartTwo';
-import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
-import TableOne from '../../components/Tables/TableOne';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import agent from '../../data/agent';
 
-const ECommerce: React.FC = () => {
+const HomePage: React.FC = () => {
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await agent.Appointments.getAll();
+        console.log(response);
+        setAppointments(response);
+      } catch (err: any) {
+        setError(
+          err.message || 'Došlo je do greške prilikom preuzimanja termina.',
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
+
+  const getCountByCategory = (category: string) => {
+    return appointments.filter(
+      (appointment) => appointment.serviceType === category,
+    ).length;
+  };
+
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+      <div className="bg-[#F0F4F8] py-16 text-center">
+        <h1 className="text-4xl font-bold mb-4">
+          Dobrodošli na stranicu eGradske uprave
+        </h1>
+        <p className="text-xl mb-6">
+          Ubrzajte i olakšajte svoje svakodnevne obaveze uz našu efikasnu
+          platformu za zakazivanje i upravljanje uslugama
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 justify-center">
+        {/* Card 1: Izdavanje dokumenata */}
+        <div className="bg-[#FFF] text-[#333] rounded-lg shadow-lg p-6 flex flex-col justify-between h-full">
+          <div>
+            <h3 className="text-3xl font-semibold mb-4">
+              Izdavanje dokumenata
+            </h3>
+            <p className="text-xl font-bold mb-2">
+              Broj ljudi u redu: {getCountByCategory('Izdavanje dokumenata')}
+            </p>
+            <p className="mb-4">
+              Zahtevi za izdavanje ili obnovu lične karte, pasoša, vozačke
+              dozvole.
+            </p>
+          </div>
+          <Link to="/queue-documents" className="text-primary   ">
+            <button className="bg-[#3C50E0] text-white py-2 px-4 rounded-lg hover:bg-[#2E3B9A] transition duration-200 mt-auto">
+              Pogledajte red
+            </button>
+          </Link>
+        </div>
+
+        {/* Card 2: Plaćanje javnih usluga */}
+        <div className="bg-[#FFF] text-[#333] rounded-lg shadow-lg p-6 flex flex-col justify-between h-full">
+          <div>
+            <h3 className="text-3xl font-semibold mb-4">
+              Plaćanje javnih usluga
+            </h3>
+            <p className="text-xl font-bold mb-2">
+              Broj ljudi u redu: {getCountByCategory('Plaćanje javnih usluga')}
+            </p>
+            <p className="mb-4">Plaćanje poreza, komunalnih usluga i kazni</p>
+          </div>
+          <Link to="/queue-paying" className="text-primary   ">
+            <button className="bg-[#3C50E0] text-white py-2 px-4 rounded-lg hover:bg-[#2E3B9A] transition duration-200 mt-auto">
+              Pogledajte red
+            </button>
+          </Link>
+        </div>
+
+        {/* Card 3: Zahtjevi za dozvole */}
+        <div className="bg-[#FFF] text-[#333] rounded-lg shadow-lg p-6 flex flex-col justify-between h-full">
+          <div>
+            <h3 className="text-3xl font-semibold mb-4">Zahtjevi za dozvole</h3>
+            <p className="text-xl font-bold mb-2">
+              Broj ljudi u redu: {getCountByCategory('Zahtjevi za dozvole')}
+            </p>
+            <p className="mb-4">
+              Podnošenje zahtjeva za građevinske i poslovne dozvole
+            </p>
+          </div>
+          <Link to="/queue-requests" className="text-primary   ">
+            <button className="bg-[#3C50E0] text-white py-2 px-4 rounded-lg hover:bg-[#2E3B9A] transition duration-200 mt-auto">
+              Pogledajte red
+            </button>
+          </Link>
+        </div>
+      </div>
+
+      {/* ovo ispod cemo prebaciti u druge komponente  */}
+      {/* <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
         <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
           <svg
             className="fill-primary dark:fill-white"
@@ -106,9 +198,9 @@ const ECommerce: React.FC = () => {
           <TableOne />
         </div>
         <ChatCard />
-      </div>
+      </div> */}
     </>
   );
 };
 
-export default ECommerce;
+export default HomePage;

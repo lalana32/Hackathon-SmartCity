@@ -33,7 +33,20 @@ const Auth = {
     request.put('Auth/edit', userData, token),
 };
 
+const Appointments = {
+  getAll: (token?: string) => request.get('Appointment/GetAppointments', token),
+  add: (values: any, token?: string) =>
+    request.post('Appointment/AddAppointments', values, token),
+  getUserAppointments: (token?: string) =>
+    request.get('Appointment/GetUserAppointments', token),
+  removeUserAppointment: (id: number, token?: string) =>
+    request.delete(`Appointment/DeleteUserAppointment/${id}`, token),
+  removeAppointment: (id: number, token?: string) =>
+    request.delete(`Appointment/delete${id}`, token),
+};
+
 const agent = {
   Auth,
+  Appointments,
 };
 export default agent;

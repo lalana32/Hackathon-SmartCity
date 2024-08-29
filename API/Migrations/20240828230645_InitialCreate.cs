@@ -8,11 +8,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigrate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    AppointmentId = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserEmail = table.Column<string>(type: "TEXT", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AppointmentDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    AppointmentTime = table.Column<string>(type: "TEXT", nullable: false),
+                    ServiceType = table.Column<string>(type: "TEXT", nullable: false),
+                    ServiceSubType = table.Column<string>(type: "TEXT", nullable: false),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.AppointmentId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -166,8 +185,8 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "2c5ff8b5-3bf4-474f-9dee-731c4e781c72", null, "Member", "MEMBER" },
-                    { "e40e30ba-e44b-45c2-867b-634e1e19488e", null, "Admin", "ADMIN" }
+                    { "06fa336a-82b9-4872-80ac-a68ce7804e1d", null, "Member", "MEMBER" },
+                    { "d9d8b0ee-e7de-47b9-9347-161c7b168163", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -211,6 +230,9 @@ namespace API.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Appointments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
