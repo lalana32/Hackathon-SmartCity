@@ -11,14 +11,51 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20240819154631_InitialMigrate")]
-    partial class InitialMigrate
+    [Migration("20240828230645_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.0");
+
+            modelBuilder.Entity("API.Models.Appointment", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("AppointmentDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AppointmentTime")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceSubType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServiceType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("AppointmentId");
+
+                    b.ToTable("Appointments");
+                });
 
             modelBuilder.Entity("API.Models.User", b =>
                 {
@@ -124,13 +161,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2c5ff8b5-3bf4-474f-9dee-731c4e781c72",
+                            Id = "06fa336a-82b9-4872-80ac-a68ce7804e1d",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         },
                         new
                         {
-                            Id = "e40e30ba-e44b-45c2-867b-634e1e19488e",
+                            Id = "d9d8b0ee-e7de-47b9-9347-161c7b168163",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

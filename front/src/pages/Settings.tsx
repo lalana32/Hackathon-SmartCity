@@ -37,6 +37,13 @@ const Settings = () => {
     }
   };
 
+  if (!user)
+    return (
+      <div className="text-center">
+        <Breadcrumb pageName="Samo prijavljeni korisnici mogu pristupiti ovoj stranici" />
+      </div>
+    );
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="max-w-3xl w-full p-6 bg-white shadow-lg rounded-lg">
@@ -109,38 +116,20 @@ const Settings = () => {
                 <div className="w-full sm:w-1/2">
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="brojLicne"
+                    htmlFor="userName"
                   >
-                    Broj lične karte
+                    Korisničko ime
                   </label>
                   <input
                     className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                     type="text"
-                    name="BrojLicne"
-                    id="BrojLicne"
+                    name="UserName"
+                    id="UserName"
                     placeholder=""
-                    value={formData.BrojLicne}
+                    value={formData.UserName}
                     onChange={handleChange}
                   />
                 </div>
-              </div>
-
-              <div className="mb-5.5">
-                <label
-                  className="mb-3 block text-sm font-medium text-black dark:text-white"
-                  htmlFor="userName"
-                >
-                  Korisničko ime
-                </label>
-                <input
-                  className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                  type="text"
-                  name="UserName"
-                  id="UserName"
-                  placeholder=""
-                  value={formData.UserName}
-                  onChange={handleChange}
-                />
               </div>
 
               <button

@@ -15,6 +15,7 @@ namespace API.DTOs
     public required string LastName { get; set; }
   
     public required string JMBG { get; set; }
+    public List<string> Roles { get; set; }
 }
 
 }

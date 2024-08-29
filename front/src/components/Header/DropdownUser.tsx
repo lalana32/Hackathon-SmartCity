@@ -90,7 +90,7 @@ const DropdownUser = () => {
                     fill=""
                   />
                 </svg>
-                Account Settings
+                Podešavanja Naloga
               </Link>
             </li>
           </ul>
@@ -115,7 +115,7 @@ const DropdownUser = () => {
                 fill=""
               />
             </svg>
-            Log Out
+            Odjavite se
           </button>
         </div>
       )}

@@ -23,5 +23,7 @@ namespace API.Data
                 new IdentityRole{Name="Admin",NormalizedName="ADMIN"}
             );
         }
+
+        public DbSet<Appointment> Appointments { get; set; }
     }
 }

@@ -3,12 +3,13 @@ import agent from '../data/agent';
 import { User } from '../models/User';
 import { FieldValues } from 'react-hook-form';
 
-interface UserState {
+export interface UserState {
   user: User | null;
 }
 
+const savedUser = localStorage.getItem('user');
 const initialState: UserState = {
-  user: null,
+  user: savedUser ? JSON.parse(savedUser) : null,
 };
 
 export const logIn = createAsyncThunk<User, FieldValues>(

@@ -29,8 +29,11 @@ namespace API.Controllers
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDTO>> Login (LoginDTO login){
-            var user=await _userManager.FindByEmailAsync(login.Email);
-            if (user ==null || !await _userManager.CheckPasswordAsync(user,login.Password)) return Unauthorized();
+            var user = await _userManager.FindByEmailAsync(login.Email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user,login.Password)) return Unauthorized();
+
+            var roles = await _userManager.GetRolesAsync(user);
+
             return new UserDTO
             {
                 FirstName = user.FirstName,
@@ -39,6 +42,7 @@ namespace API.Controllers
                 Token = await _tokenService.GenerateToken(user),
                 UserName = user.UserName!,
                 JMBG = user.JMBG,
+                Roles = roles.ToList(),
             };
 
         }
@@ -93,6 +97,7 @@ namespace API.Controllers
                 Token = await _tokenService.GenerateToken(user),
                 UserName = user.UserName!,
                 JMBG = user.JMBG,
+
             };
 
             return Ok(userDTO); // Vrati uspešan odgovor sa DTO-om
@@ -131,6 +136,7 @@ namespace API.Controllers
             user.LastName = updateUserDTO.LastName;
             user.UserName = updateUserDTO.UserName;
             user.Email = updateUserDTO.Email;
+            
 
             var result = await _userManager.UpdateAsync(user);
             

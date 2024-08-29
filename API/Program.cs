@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using API.Services.Interfaces;
 using API.Services;
+using API;
 
 
 
@@ -72,6 +73,7 @@ builder.Services.AddSwaggerGen(c =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
 

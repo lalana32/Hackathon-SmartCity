@@ -1,12 +1,148 @@
+import { useEffect, useState } from 'react';
+import agent from '../data/agent';
+import { useAppSelector } from '../store/configureStore';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ConfirmDialog from '../components/ConfirmDialog/ConfirmDialog';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 
-const Calendar = () => {
+const MyAppointments = () => {
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const [appointmentIdToDelete, setAppointmentIdToDelete] = useState<
+    number | null
+  >(null);
+
+  const user = useAppSelector((state) => state.auth.user);
+  const token = user?.token;
+
+  useEffect(() => {
+    if (!token) {
+      setError('Niste prijavljeni. Molimo prijavite se.');
+      setLoading(false);
+      return;
+    }
+    const fetchAppointments = async () => {
+      try {
+        const response = await agent.Appointments.getUserAppointments(token);
+        console.log(response);
+        setAppointments(response);
+      } catch (err: any) {
+        setError(
+          err.message || 'Došlo je do greške prilikom preuzimanja termina.',
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, [token]);
+
+  const handleDeleteClick = (id: number) => {
+    setAppointmentIdToDelete(id);
+    setOpenDialog(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (appointmentIdToDelete !== null) {
+      try {
+        await agent.Appointments.removeUserAppointment(
+          appointmentIdToDelete,
+          token,
+        );
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting appointment:', error);
+      }
+      setAppointmentIdToDelete(null);
+      setOpenDialog(false);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setAppointmentIdToDelete(null);
+  };
+
+  const sortedAppointments = appointments.sort((a, b) => {
+    // Parsiramo datume i vreme
+    const dateTimeA = new Date(a.appointmentDate).getTime();
+    const dateTimeB = new Date(b.appointmentDate).getTime();
+
+    // Prvo sortiramo po datumu
+    if (dateTimeA !== dateTimeB) {
+      return dateTimeA - dateTimeB;
+    }
+
+    // Ako su datumi isti, sortiramo po vremenu
+    const timeA = new Date(`1970-01-01T${a.appointmentTime}`).getTime();
+    const timeB = new Date(`1970-01-01T${b.appointmentTime}`).getTime();
+    return timeA - timeB;
+  });
+
+  if (loading) return <div className="text-center">Učitavanje...</div>;
+
+  if (!token)
+    return (
+      <div className="text-center">
+        <Breadcrumb pageName="Samo prijavljeni korisnici mogu pristupiti ovoj stranici" />
+      </div>
+    );
+
   return (
     <>
-      <Breadcrumb pageName="Calendar" />
+      <div className="container mx-auto p-4">
+        <h2 className="text-2xl font-bold mb-4">Moji Termini</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {sortedAppointments.map((appointment: any) => (
+            <div
+              key={appointment.appointmentId}
+              className="bg-white p-4 shadow-md rounded-md border border-gray-300 relative"
+            >
+              <div className="absolute top-2 right-2">
+                <IconButton
+                  onClick={() => handleDeleteClick(appointment.appointmentId)}
+                  aria-label="delete"
+                  color="error"
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </div>
+              <div className="text-lg font-semibold text-gray-800 mb-2">
+                {appointment.userEmail}
+              </div>
+              <p className="text-gray-700 mb-1">
+                <span className="font-semibold">Datum:</span>{' '}
+                {new Date(appointment.appointmentDate).toLocaleDateString()}
+              </p>
+              <p className="text-gray-700 mb-1">
+                <span className="font-semibold">Vrijeme:</span>{' '}
+                {appointment.appointmentTime}
+              </p>
+              <p className="text-gray-700 mb-1">
+                <span className="font-semibold">Kategorija:</span>{' '}
+                {appointment.serviceType || 'N/A'}
+              </p>
+              <p className="text-gray-700">
+                <span className="font-semibold">Podkategorija:</span>{' '}
+                {appointment.serviceSubType || 'N/A'}
+              </p>
+            </div>
+          ))}
+        </div>
+        <ConfirmDialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          onConfirm={handleConfirmDelete}
+        />
+      </div>
 
       {/* <!-- ====== Calendar Section Start ====== --> */}
-      <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      {/* <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <table className="w-full">
           <thead>
             <tr className="grid grid-cols-7 rounded-t-sm bg-primary text-white">
@@ -40,9 +176,9 @@ const Calendar = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {/* <!-- Line 1 --> */}
-            <tr className="grid grid-cols-7">
+          <tbody> */}
+      {/* <!-- Line 1 --> */}
+      {/* <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
                   1
@@ -91,10 +227,10 @@ const Calendar = () => {
                   7
                 </span>
               </td>
-            </tr>
-            {/* <!-- Line 1 --> */}
-            {/* <!-- Line 2 --> */}
-            <tr className="grid grid-cols-7">
+            </tr> */}
+      {/* <!-- Line 1 --> */}
+      {/* <!-- Line 2 --> */}
+      {/* <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
                   8
@@ -130,10 +266,10 @@ const Calendar = () => {
                   14
                 </span>
               </td>
-            </tr>
-            {/* <!-- Line 2 --> */}
-            {/* <!-- Line 3 --> */}
-            <tr className="grid grid-cols-7">
+            </tr> */}
+      {/* <!-- Line 2 --> */}
+      {/* <!-- Line 3 --> */}
+      {/* <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
                   15
@@ -169,10 +305,10 @@ const Calendar = () => {
                   21
                 </span>
               </td>
-            </tr>
-            {/* <!-- Line 3 --> */}
-            {/* <!-- Line 4 --> */}
-            <tr className="grid grid-cols-7">
+            </tr> */}
+      {/* <!-- Line 3 --> */}
+      {/* <!-- Line 4 --> */}
+      {/* <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
                   22
@@ -221,10 +357,10 @@ const Calendar = () => {
                   28
                 </span>
               </td>
-            </tr>
-            {/* <!-- Line 4 --> */}
-            {/* <!-- Line 5 --> */}
-            <tr className="grid grid-cols-7">
+            </tr> */}
+      {/* <!-- Line 4 --> */}
+      {/* <!-- Line 5 --> */}
+      {/* <tr className="grid grid-cols-7">
               <td className="ease relative h-20 cursor-pointer border border-stroke p-2 transition duration-500 hover:bg-gray dark:border-strokedark dark:hover:bg-meta-4 md:h-25 md:p-6 xl:h-31">
                 <span className="font-medium text-black dark:text-white">
                   29
@@ -262,12 +398,12 @@ const Calendar = () => {
               </td>
             </tr>
             {/* <!-- Line 5 --> */}
-          </tbody>
-        </table>
-      </div>
+      {/* </tbody>
+        </table> */}
+      {/* </div> */}
       {/* <!-- ====== Calendar Section End ====== --> */}
     </>
   );
 };
 
-export default Calendar;
+export default MyAppointments;

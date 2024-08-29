@@ -5,17 +5,20 @@ import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
-import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
-import Profile from './pages/Profile';
+import Profile from './pages/AppointmentForm';
 import Settings from './pages/Settings';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
 import Buttons from './pages/UiElements/Buttons';
 import DefaultLayout from './layout/DefaultLayout';
+import HomePage from './pages/HomePage/HomePage';
+import QueueDocuments from './pages/Queue/QueueDocuments';
+import QueueRequests from './pages/Queue/QueueRequests';
+import QueuePaying from './pages/Queue/QueuePaying';
+import MyAppointments from './pages/MyAppointments';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -39,24 +42,24 @@ function App() {
           element={
             <>
               <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <ECommerce />
+              <HomePage />
             </>
           }
         />
         <Route
-          path="/calendar"
+          path="/my-appointments"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <Calendar />
+              <PageTitle title="Moji termini" />
+              <MyAppointments />
             </>
           }
         />
         <Route
-          path="/profile"
+          path="/create-appointment"
           element={
             <>
-              <PageTitle title="Profile | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Zakažite termin" />
               <Profile />
             </>
           }
@@ -101,7 +104,7 @@ function App() {
           path="/chart"
           element={
             <>
-              <PageTitle title="Basic Chart | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Statistika" />
               <Chart />
             </>
           }
@@ -139,6 +142,33 @@ function App() {
             <>
               <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <SignUp />
+            </>
+          }
+        />
+        <Route
+          path="/queue-documents"
+          element={
+            <>
+              <PageTitle title="Red čekanja - dokumenti" />
+              <QueueDocuments />
+            </>
+          }
+        />
+        <Route
+          path="/queue-paying"
+          element={
+            <>
+              <PageTitle title="Red čekanja - plaćanje" />
+              <QueuePaying />
+            </>
+          }
+        />
+        <Route
+          path="/queue-requests"
+          element={
+            <>
+              <PageTitle title="Red čekanja - zahtjevi" />
+              <QueueRequests />
             </>
           }
         />
